@@ -1,0 +1,116 @@
+@import "reset";
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import "browser";
+
+
+html
+    @include breakpoint(pc)
+        font-size: 18px
+    @include breakpoint(pad)
+        font-size: 16px
+    @include breakpoint(mobile)
+        font-size: 14px
+    @include breakpoint(mobile-sm)
+        font-size: 12px
+
+body
+    font-family: 'Roboto', sans-serif       
+main
+    margin: 0 auto
+    padding: 20px
+    max-width: 500px
+    min-height: 100vh
+    color: white
+    background-position: center
+    background-size: cover
+    background-repeat: no-repeat
+    transition: 0.4 ease-out
+    background-image: url('../img/bg/sunny.jpg')
+    .sunny
+        background-image: url('../img/bg/sunny.jpg')
+    .rainy
+        background-image: url('../img/bg/rainy.jpg')
+    .thunder
+        background-image: url('../img/bg/thunder.jpg')
+    .cloudy
+        background-image: url('../img/bg/cloudy.jpg')
+    .setting-container
+        button
+            width: 30px
+            height: 30px
+            border: none
+            background: url('../img/icon/setting.png') no-repeat center / contain
+           
+    .time-and-temperature-container
+        display: inline-flex
+        justify-content: space-between
+        align-items: flex-end
+        width: 100%
+        .city
+            padding: 10px 0 
+            font-size: 24px
+            font-weight: 700
+        .date
+            font-size: 16px
+        .unit
+            width: 1rem
+            height: 1rem
+            border: 3px solid #fff
+            border-radius: 50%
+            float: right
+        .average-temperature
+            font-size: 4rem
+            float: right
+        .min-max-temperature
+            padding-top: 10px
+            display: inline-flex
+            .temperature
+                font-size: 10px
+                &:first-child
+                    padding-right: 5px 
+            
+    .primary-info-container
+        margin-top: 6vh
+        width: 100%
+        text-align: center
+        .weather
+            &-icon
+                margin: 0 auto
+                max-width: 180px
+                width: auto
+                height: 25vh
+                max-height: 180px
+                background: url('../img/icon/sunny-icon.png') no-repeat center / contain     
+            &-type
+                margin-top: 20px
+                font-weight: 700
+                font-size: 2rem
+            &-description
+                margin-top: 20px
+                font-size: 1.5rem
+                font-weight: 500
+                text-shadow: 1px 1px rgba(20, 20,20 ,0.5 )
+
+    .secondary-info-container
+        display: inline-flex
+        justify-content: center
+        margin-top: 8vh
+        width: 100%
+        .weather-item
+            margin: 0 2.5rem
+            &-icon
+                img
+                    width: auto
+                    height: 40px
+            &-value
+                margin-top: 10px
+                font-size: 24px
+                white-space: nowrap
+                span
+                    font-size: 12px
+
+
+              
+
+
+
