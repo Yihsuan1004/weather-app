@@ -12,7 +12,7 @@ const api = {
   base: "https://opendata.cwb.gov.tw/api/v1/rest/datastore/",
   futureWeather: 'F-C0032-001',
   currentWeather:'O-A0003-001',
-  city: encodeURI('金門縣'),
+  city: encodeURI('澎湖縣'),
   cities: "466940,C0AC70,466880,467050,C0D390,C0D570,C0E420,C0F0B0,C0G640,C0H890,C0K240,C0M690,C0M730,C0O950,C0V500,C0R100,467060,466990,C0S690,C0W110,C0W130,C0W140"
   /* 466940:基隆市,C0AC70:台北市,466880:新北市,467050:桃園市,467571:新竹縣,C0D570:新竹市,
   C0E420:苗栗縣,C0F0B0:台中市,C0G640:彰化縣,C0H890:南投縣,C0K240:雲林縣,
@@ -52,7 +52,7 @@ function App() {
   const weatherBackground = {
     isSunny: sunnyBG,
     isCloudy: cloudyBG,
-    isRain: rainyBG,
+    isRainy: rainyBG,
     isFoggy: cloudyBG,
     isFoggyRain: rainyBG,
     isSnow: snowBG,
@@ -66,11 +66,8 @@ function App() {
     ((type)=> {
           return type[1].includes(Number(weatherValue))
     }) || [];
-    
-    if(!weatherType){
-      background.style.backgroundImage = `url(${weatherBackground[weatherType[0]]})`
-    }
-
+    console.log(weatherBackground[weatherType[0]])
+    background.style.backgroundImage = `url(${weatherBackground[weatherType[0]]})`
   }
 
   const fetchCurrentWeather = () =>{
@@ -107,6 +104,7 @@ function App() {
           return requiredData
         }
       )
+      weatherBgSrc(requiredData.Wx.parameterValue);
       return{ 
         city: locationName,
         type: requiredData.Wx.parameterName,
@@ -128,14 +126,13 @@ function App() {
         setCurrentWeather( { 
           ...currentWeather,
           ...futureWeather,
-        })
+        })        
     }
-    fetchingData();
+    fetchingData()
   },[])
   
   useEffect(() => {
-    fetchData();
-    weatherBgSrc(2);
+    fetchData()
   } , [fetchData]);
 
 
