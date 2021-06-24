@@ -16,6 +16,7 @@ html
 body
     font-family: 'Roboto', sans-serif       
 main
+    //main-page
     margin: 0 auto
     padding: 20px
     max-width: 500px
@@ -25,15 +26,8 @@ main
     background-size: cover
     background-repeat: no-repeat
     transition: 0.4 ease-out
+#saveee
     background-image: url('../img/bg/sunny.jpg')
-    .sunny
-        background-image: url('../img/bg/sunny.jpg')
-    .rainy
-        background-image: url('../img/bg/rainy.jpg')
-    .thunder
-        background-image: url('../img/bg/thunder.jpg')
-    .cloudy
-        background-image: url('../img/bg/cloudy.jpg')
     .setting-container
         button
             width: 30px
@@ -80,7 +74,8 @@ main
                 width: auto
                 height: 25vh
                 max-height: 180px
-                background: url('../img/icon/sunny-icon.png') no-repeat center / contain     
+                img
+                   height: 100%
             &-type
                 margin-top: 20px
                 font-weight: 700
@@ -98,6 +93,7 @@ main
         width: 100%
         .weather-item
             margin: 0 2.5rem
+            min-width: 0
             &-icon
                 img
                     width: auto
@@ -110,6 +106,53 @@ main
                     font-size: 12px
 
 
+    //setting-page
+    .setting-page,.body-wrap
+        position: absolute
+        top: 0
+        left: 50%
+        transform: translateX(-50%)
+        width: 100%
+    .setting-page
+        z-index: 2
+        padding: 40px 20px
+        max-width: 500px
+        background-color: white
+        color: black
+        font-size: 1.5rem
+        .title
+            margin-bottom: 20px
+            font-size: 2rem
+            font-weight: 700
+        select
+            margin: 20px 0
+            padding: 5px
+            width: 100%
+        .btn-container
+            display: flex
+            justify-content: center
+        .back-btn,.save-btn
+            color: white
+            padding: 5px 0
+            width: 50%
+            border: none
+            border-radius: 5px
+        .back-btn
+            margin-right: 10px
+            background-color: #aaa
+            &:hover
+                background-color: #777
+                transition-duration: .5s
+        .save-btn
+            background-color: #136ab1
+            &:hover
+                background-color: #0e4470
+                transition-duration: .5s
+    .body-wrap
+        z-index: 1
+        height: 100vh
+        background-color: rgba(0,0 ,0 , .7)
+        transition-duration: .5s
               
 
 

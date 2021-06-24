@@ -2,6 +2,14 @@ import React from 'react';
 import umbrella from "../assets/img/icon/umbrella.png";
 import wind from "../assets/img/icon/wind.png";
 import waterdrop from "../assets/img/icon/waterdrop.png";
+import cloudyBG from "../assets/img/bg/cloudy.jpg";
+import rainyBG from "../assets/img/bg/rainy.jpg";
+import sunnyBG from "../assets/img/bg/sunny.jpg";
+import thunderBG from "../assets/img/bg/thunder.jpg";
+import snowBG from "../assets/img/bg/snow.png";
+import { SettingButton } from './setting-button';
+import { SettingPage } from './setting-page';
+import { WeatherIcon } from './weather-icon.js';
 
 export function Page (props){
 
@@ -14,10 +22,11 @@ export function Page (props){
         return `${year}/${month}/${date} ${day}`
     }
     const weather = props.currentWeather;
+  
     return(
-    <main className="sunny"> 
+    <main id="saveee"> 
       <div className="setting-container">
-        <button></button>
+        <SettingButton />
       </div>
       <div className="time-and-temperature-container">
         <div>
@@ -27,15 +36,13 @@ export function Page (props){
         <div>
         <div><span className="unit"></span><div className="average-temperature"> {weather.averageTemperature}</div></div>
         <div className="min-max-temperature">
-            <div className="temperature">最高: {weather.maxTemperature}</div>
-            <div className="temperature">最低: {weather.minTemperature}</div>
+            <div className="temperature">最高: {weather.maxTemperature > weather.averageTemperature ?  weather.maxTemperature :  weather.averageTemperature}</div>
+            <div className="temperature">最低: {weather.minTemperature < weather.averageTemperature ?  weather.minTemperature :  weather.averageTemperature}</div>
         </div>
         </div>
       </div>
       <div className="primary-info-container">
-        <div className="weather-icon">
-
-        </div>
+        <WeatherIcon weatherValue={weather.typeValue}/>
         <div className="weather-type">
             {weather.type}
         </div>
@@ -63,6 +70,7 @@ export function Page (props){
           <div className="weather-item-value">{weather.humidity} <span>%</span></div>
         </div>
       </div>
+      {/* <SettingPage /> */}
      </main>
     )
 }
