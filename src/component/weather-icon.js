@@ -1,4 +1,7 @@
 import React from 'react';
+import { dateFormater } from '../utils/date-converter';
+import sunriseAndSunsetData from '../assets/json/sunrise-sunset.json';
+
 import sunnyMorning from "../assets/img/icon/sunny-morning.png";
 import sunnyNight from "../assets/img/icon/sunny-night.png";
 import cloudyMorning from "../assets/img/icon/cloudy-morning.png";
@@ -18,7 +21,10 @@ import loadingImg from "../assets/img/Spinner-0.9s-217px.svg"
 
 export const WeatherIcon = (props) =>{
     const weatherTypeValue = props.weatherValue;
-    console.log('weatherTypes',typeof(props.weatherValue));
+    const weatherCity = props.weatherCity;
+    let weatherType = null;
+    let morningOrNight = null;    
+
     const weatherTypes = {
         isThunderstorm: [15, 16, 17, 18, 21, 22, 33, 34, 35, 36, 41],
         isSunny: [1],
@@ -52,19 +58,55 @@ export const WeatherIcon = (props) =>{
         }
     }
 
-    const weatherIconSrc = (weatherValue,) =>{
-        const weatherType = Object.entries(weatherTypes).find
-        ((type)=> {
-              return type[1].includes(Number(weatherValue))
-        }) || [];
-        return weatherIcons.morning[weatherType[0]] || loadingImg;
+    
+    const getlocationData  = async(locationName) =>{
+        try {
+            const locationData = await sunriseAndSunsetData.find(obj => obj.locationName === locationName);
+            const date = dateFormater(new Date());
+            const localTime = new Date().getTime();
+            const sunRiseAndsunSet = await locationData.time.find(data => data.dataTime === date);
+            const sunRiseTime = new Date(`${sunRiseAndsunSet.dataTime} ${sunRiseAndsunSet.sunrise}`).getTime();
+            const sunSetTime = new Date(`${sunRiseAndsunSet.dataTime} ${sunRiseAndsunSet.sunset}`).getTime();
+            return localTime > sunRiseTime && localTime < sunSetTime ? 'morning' : 'night'
+        }
+        catch (error){
+            console.warn(error)
+        }
+        
     }
 
-    
+    const findWeatherType = async() =>{
+        try {
+            return Object.entries(weatherTypes).find
+            ((type)=> {
+                return type[1].includes(Number(weatherTypeValue))
+            }) || [];
+        }
+        catch(error){
+            console.warn(error)
+        }
+    }
 
+    const returnIcon = () =>{
+        Promise.all(
+            [findWeatherType(weatherTypeValue),
+            getlocationData(weatherCity)])
+            .then((result) =>{
+                weatherType = result[0][0];
+                morningOrNight = result[1];
+         }).then(() =>{
+             if(weatherType && morningOrNight){
+                const iconSrc =  weatherIcons[morningOrNight][weatherType]
+                document.getElementById('icon').src = iconSrc
+             }
+            
+         })
+    }
+
+ 
     return (
         <div className="weather-icon">
-           <img src={weatherIconSrc(weatherTypeValue)} alt="weather"/>
+           <img id="icon"src={returnIcon() || loadingImg} alt="weather"/>
         </div>
     )
 

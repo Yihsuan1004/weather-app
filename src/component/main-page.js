@@ -1,36 +1,30 @@
 import React from 'react';
+import { dateBuilder,hourMinuteFormater } from '../utils/date-converter'
 import umbrella from "../assets/img/icon/umbrella.png";
 import wind from "../assets/img/icon/wind.png";
 import waterdrop from "../assets/img/icon/waterdrop.png";
-import cloudyBG from "../assets/img/bg/cloudy.jpg";
-import rainyBG from "../assets/img/bg/rainy.jpg";
-import sunnyBG from "../assets/img/bg/sunny.jpg";
-import thunderBG from "../assets/img/bg/thunder.jpg";
-import snowBG from "../assets/img/bg/snow.png";
-import { SettingButton } from './setting-button';
-import { SettingPage } from './setting-page';
+import { SettingPage } from './setting-page'
 import { WeatherIcon } from './weather-icon.js';
 
 export function Page (props){
 
-    const dateBuilder = (d) =>{
-        let days = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
-        let day = days[d.getDay()];
-        let month = d.getMonth()+1;
-        let date = d.getDate();
-        let year = d.getFullYear();
-        return `${year}/${month}/${date} ${day}`
-    }
     const weather = props.currentWeather;
-  
+    const obsTime = hourMinuteFormater(new Date(weather.obsTime));
+    const humidity = Math.floor(weather.humidity)
+    const handleClick = () => {
+      props.setIsOpened(true)
+      console.log(props.isOpened)
+    }
+
+
     return(
-    <main id="saveee"> 
+    <main id="main_page"> 
       <div className="setting-container">
-        <SettingButton />
+        <button onClick={handleClick}></button>
       </div>
       <div className="time-and-temperature-container">
         <div>
-          <div className="city">{weather.city}</div>
+          <div className="city">{props.cityName}</div>
           <div className="date">{dateBuilder(new Date())}</div>
         </div>
         <div>
@@ -42,7 +36,7 @@ export function Page (props){
         </div>
       </div>
       <div className="primary-info-container">
-        <WeatherIcon weatherValue={weather.typeValue}/>
+        <WeatherIcon weatherValue={weather.typeValue} weatherCity={props.cityName}/>
         <div className="weather-type">
             {weather.type}
         </div>
@@ -67,10 +61,18 @@ export function Page (props){
           <div className="weather-item-icon">
             <img src = {waterdrop} alt="濕度"/>
           </div>
-          <div className="weather-item-value">{weather.humidity} <span>%</span></div>
+          <div className="weather-item-value">{humidity} <span>%</span></div>
         </div>
       </div>
-      {/* <SettingPage /> */}
+      <div className="obs-time-container">
+        <div className="obs-time" >
+          <div>觀測時間:{obsTime}</div>
+        </div>
+      </div>
+      {props.isOpened ? <SettingPage  setIsOpened={props.setIsOpened}  
+                                      setLocationName={props.setLocationName}
+                                      setCityName = {props.setCityName}
+                                      /> : null }
      </main>
     )
 }
