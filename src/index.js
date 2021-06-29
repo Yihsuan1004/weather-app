@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './assets/sass/main.sass';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+document.title = "CurrentWeatherApp";
 
 ReactDOM.render(
   <React.StrictMode>
