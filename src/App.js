@@ -1,5 +1,4 @@
-import axios from 'axios';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useWeatherApi } from './hooks/useWeatherApi'
 import { Page } from './component/main-page'
 
@@ -11,7 +10,6 @@ function App() {
   const cityNameEnCode = encodeURI(cityName);
   const [currentWeather,fetchData] = useWeatherApi(cityNameEnCode,locationName)
 
-  document.title = 'CurrentWeatherApp';
 
   return (
    <div className="app">
