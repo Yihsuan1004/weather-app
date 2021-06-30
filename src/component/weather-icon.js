@@ -23,8 +23,7 @@ export const WeatherIcon = (props) =>{
     const weatherTypeValue = props.weatherValue;
     const weatherCity = props.weatherCity;
     let weatherType = null;
-    let morningOrNight = null;    
-
+    let morningOrNight = null;  
     const weatherTypes = {
         isThunderstorm: [15, 16, 17, 18, 21, 22, 33, 34, 35, 36, 41],
         isSunny: [1],
@@ -62,7 +61,7 @@ export const WeatherIcon = (props) =>{
     const getlocationData  = async(locationName) =>{
         try {
             const locationData = await sunriseAndSunsetData.find(obj => obj.locationName === locationName);
-            const date = dateFormater(new Date());
+            const date = await dateFormater(new Date());
             const localTime = new Date().getTime();
             const sunRiseAndsunSet = await locationData.time.find(data => data.dataTime === date);
             const sunRiseTime = new Date(`${sunRiseAndsunSet.dataTime} ${sunRiseAndsunSet.sunrise}`).getTime();
@@ -86,6 +85,7 @@ export const WeatherIcon = (props) =>{
             console.warn(error)
         }
     }
+    console.log(getlocationData(weatherCity))
 
     const returnIcon = () =>{
         Promise.all(
