@@ -6,5 +6,8 @@
 * 設定按鈕可以選擇地區。
 * 依照天氣類別、早晚會顯示不一樣的背景圖和圖示。
 
-### Structure
+### Demo:
+https://yihsuan1004.github.io/weather-app/
+
+### 情境圖
 ![Alt text](/src/assets/img/weather.jpg?raw=true "Optional Title")
