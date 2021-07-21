@@ -19,7 +19,7 @@ const weatherTypes = {
         14, 19, 20, 29, 30, 
     ],
     isSnow: [23, 37, 42],
-  };
+};
 
 const weatherBackground = {
     isSunny: sunnyBG,
@@ -51,7 +51,7 @@ export const useWeatherApi = (cityName,locationName) =>{
         probabilityOfPrecipitation: 0, /*降雨機率*/
         windSpeed: 0,
         humidity: 0,
-      });
+    });
 
     const weatherBgSrc = (weatherValue) =>{
         const background = document.getElementById('main_page');
@@ -89,7 +89,6 @@ export const useWeatherApi = (cityName,locationName) =>{
         return axios.get(`${api.base}${api.futureWeather}?Authorization=${api.key}&locationName=${cityName}`)
         .then((response) =>{
             console.log(response,'futureWeather',cityName)
-
             const weatherData = response.data.records.location[0].weatherElement;
             const locationName = response.data.records.location[0].locationName;
             var requiredData = {};
@@ -138,6 +137,4 @@ export const useWeatherApi = (cityName,locationName) =>{
       } , [fetchData]);
 
       return [currentWeather,fetchData];
-
-
 }
