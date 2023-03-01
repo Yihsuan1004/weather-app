@@ -53,6 +53,7 @@ export const useWeatherApi = (cityName,locationName) =>{
         humidity: 0,
     });
 
+
     const weatherBgSrc = (weatherValue) =>{
         const background = document.getElementById('main_page');
         const weatherType = Object.entries(weatherTypes).find
@@ -62,79 +63,85 @@ export const useWeatherApi = (cityName,locationName) =>{
         background.style.backgroundImage = `url(${weatherBackground[weatherType[0]]})`
     }
     
-    const fetchCurrentWeather = (locationName) =>{
-        return axios.get(`${api.base}${api.currentWeather}?Authorization=${api.key}&locationName=${locationName}&elementName=TEMP,HUMD,WDSD&parameterName=CITY`)
-        .then((response) => {
-          console.log(response,'currentWeather',locationName)
-          const weatherData = response.data.records.location[0].weatherElement;
-          const obsTime = response.data.records.location[0].time.obsTime
-          var requiredData = {};
-          weatherData.forEach(
-            (item) =>  {
-              requiredData[item.elementName] = item.elementValue;
-              return requiredData
-            }
-          )
-         return { 
-            windSpeed: requiredData.WDSD,
-            averageTemperature: Math.round(requiredData.TEMP),
-            humidity: (requiredData.HUMD) * 100,
-            obsTime: obsTime
+
+    const fetchCurrentWeather = async (locationName) =>{
+      try {
+        const response = await axios.get(`${api.base}${api.currentWeather}?Authorization=${api.key}&locationName=${locationName}&elementName=TEMP,HUMD,WDSD&parameterName=CITY`);
+        const weatherData = response.data.records.location[0].weatherElement;
+        const obsTime = response.data.records.location[0].time.obsTime;
+        var requiredData = {};
+        weatherData.forEach(
+          (item) => {
+            requiredData[item.elementName] = item.elementValue;
+            return requiredData;
           }
-        })
-        .catch(error => console.error(`Error ${error}`))
+        );
+        return {
+          windSpeed: requiredData.WDSD,
+          averageTemperature: Math.round(requiredData.TEMP),
+          humidity: (requiredData.HUMD) * 100,
+          obsTime: obsTime
+        };
+      } catch (error) {
+        return console.error(`Error ${error}`);
       }
-    
-    const fetchFutureWeather = (cityName) =>{
-        return axios.get(`${api.base}${api.futureWeather}?Authorization=${api.key}&locationName=${cityName}`)
-        .then((response) =>{
-            console.log(response,'futureWeather',cityName)
-            const weatherData = response.data.records.location[0].weatherElement;
-            const locationName = response.data.records.location[0].locationName;
-            var requiredData = {};
-            weatherData.forEach(
-                (item) =>  {
-                requiredData[item.elementName] = item.time[0].parameter;
-                return requiredData
-                }
-            )
-            weatherBgSrc(requiredData.Wx.parameterValue);
-            return{ 
-                city: locationName,
-                type: requiredData.Wx.parameterName,
-                typeValue: requiredData.Wx.parameterValue,
-                probabilityOfPrecipitation: requiredData.PoP.parameterName,
-                minTemperature: requiredData.MinT.parameterName,
-                description: requiredData.CI.parameterName,
-                maxTemperature: requiredData.MaxT.parameterName
-            }
-        })
-        .catch(error => console.error(`Error ${error}`))
     }
     
-    const fetchData = useCallback(() => {
-        const fetchingData = async() =>{
-          try{
-            const[currentWeather, futureWeather] = await axios.all([
-              fetchCurrentWeather(locationName),
-              fetchFutureWeather(cityName)]);
-    
-              setCurrentWeather( { 
-                ...currentWeather,
-                ...futureWeather,
-              })
-                 
-          }
-          catch(error){
-            console.error(error)
-          }
-        }
-        fetchingData()
-      },[cityName,locationName])
-      
-      useEffect(() => {
-        fetchData()
-      } , [fetchData]);
 
-      return [currentWeather,fetchData];
+    const fetchFutureWeather = async (cityName) =>{
+        try {
+        const response = await axios.get(`${api.base}${api.futureWeather}?Authorization=${api.key}&locationName=${cityName}`);
+        const weatherData = response.data.records.location[0].weatherElement;
+        const locationName = response.data.records.location[0].locationName;
+        var requiredData = {};
+        weatherData.forEach(
+          (item) => {
+            requiredData[item.elementName] = item.time[0].parameter;
+            return requiredData;
+          }
+        );
+        weatherBgSrc(requiredData.Wx.parameterValue);
+        return {
+          city: locationName,
+          type: requiredData.Wx.parameterName,
+          typeValue: requiredData.Wx.parameterValue,
+          probabilityOfPrecipitation: requiredData.PoP.parameterName,
+          minTemperature: requiredData.MinT.parameterName,
+          description: requiredData.CI.parameterName,
+          maxTemperature: requiredData.MaxT.parameterName
+        };
+      } catch (error) {
+        return console.error(`Error ${error}`);
+      }
+    }
+    
+
+    const fetchData = useCallback(() => {
+      const fetchingData = async() =>{
+        try{
+          const[currentWeather, futureWeather] = await axios.all(
+            [
+              fetchCurrentWeather(locationName),
+              fetchFutureWeather(cityName)
+            ]
+          );
+  
+          setCurrentWeather( { 
+            ...currentWeather,
+            ...futureWeather,
+          })
+                
+        }
+        catch(error){
+          console.error(error)
+        }
+      }
+      fetchingData();
+    },[cityName, locationName]);
+      
+    useEffect(() => {
+      fetchData()
+    } , [fetchData]);
+
+    return [currentWeather,fetchData];
 }

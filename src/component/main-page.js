@@ -10,10 +10,9 @@ export function Page (props){
 
     const weather = props.currentWeather;
     const obsTime = hourMinuteFormater(new Date(weather.obsTime));
-    const humidity = Math.floor(weather.humidity)
+    const humidity = Math.floor(weather.humidity);
     const handleClick = () => {
       props.setIsOpened(true)
-      console.log(props.isOpened)
     }
 
 

@@ -5,7 +5,7 @@ import { Page } from './component/main-page'
 
 function App() {
   const [cityName, setCityName] = useState('新北市')
-  const [locationName, setLocationName] = useState('板橋')
+  const [locationName, setLocationName] = useState('新北')
   const [isOpened, setIsOpened] = useState(false);
   const cityNameEnCode = encodeURI(cityName);
   const [currentWeather,fetchData] = useWeatherApi(cityNameEnCode,locationName)

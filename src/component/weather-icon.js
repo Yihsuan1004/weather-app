@@ -1,5 +1,7 @@
 import React from 'react';
 import { dateFormater } from '../utils/date-converter';
+
+// @see https://opendata.cwb.gov.tw/dataset/astronomy/A-B0062-001 
 import sunriseAndSunsetData from '../assets/json/sunrise-sunset.json';
 
 import sunnyMorning from "../assets/img/icon/sunny-morning.png";
@@ -60,12 +62,12 @@ export const WeatherIcon = (props) =>{
     
     const getlocationData  = async(locationName) =>{
         try {
-            const locationData = await sunriseAndSunsetData.find(obj => obj.locationName === locationName);
-            const date = await dateFormater(new Date());
+            const locationData = sunriseAndSunsetData.find(obj => obj.locationName === locationName);
+            const date = dateFormater(new Date());
             const localTime = new Date().getTime();
-            const sunRiseAndsunSet = await locationData.time.find(data => data.dataTime === date);
-            const sunRiseTime = new Date(`${sunRiseAndsunSet.dataTime} ${sunRiseAndsunSet.sunrise}`).getTime();
-            const sunSetTime = new Date(`${sunRiseAndsunSet.dataTime} ${sunRiseAndsunSet.sunset}`).getTime();
+            const sunRiseAndsunSet = locationData.time.find(data => data.Date === date);
+            const sunRiseTime = new Date(`${sunRiseAndsunSet.Date} ${sunRiseAndsunSet.SunRiseTime}`).getTime();
+            const sunSetTime = new Date(`${sunRiseAndsunSet.Date} ${sunRiseAndsunSet.SunSetTime}`).getTime();
             return localTime > sunRiseTime && localTime < sunSetTime ? 'morning' : 'night'
         }
         catch (error){
@@ -85,7 +87,6 @@ export const WeatherIcon = (props) =>{
             console.warn(error)
         }
     }
-    console.log(getlocationData(weatherCity))
 
     const returnIcon = () =>{
         Promise.all(

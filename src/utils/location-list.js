@@ -1,3 +1,6 @@
+
+//各地觀測站資料請參考 https://e-service.cwb.gov.tw/wdps/obs/state.htm
+
 export const availableLocations = [
     {
         cityName: '基隆市',
@@ -13,7 +16,7 @@ export const availableLocations = [
     },
     {
         cityName: '新北市',
-        locationName: '板橋',
+        locationName: '新北',
         areas: 'northern',
         sunriseCityName: '新北市',
     },

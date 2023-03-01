@@ -21,8 +21,8 @@ export const SettingPage = (props) =>{
             return location.cityName === value
         })
 
-        console.log(`儲存的地區資訊為：${value}`);
-        console.log(locationObj)
+        // console.log(`儲存的地區資訊為：${value}`);
+        // console.log(locationObj)
         alert(`儲存成功!，地區已改為${value}`);
         props.setIsOpened(false);
         props.setCityName(value);
